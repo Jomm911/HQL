@@ -6,12 +6,12 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class User {
     private SimpleStringProperty username;
-    private SimpleIntegerProperty timeRemaining; // in hours
+    private SimpleIntegerProperty timeRemaining; // in total minutes
     private SimpleDoubleProperty balance; // in currency
 
     public User(String username, int timeRemaining, double balance) {
         this.username = new SimpleStringProperty(username);
-        this.timeRemaining = new SimpleIntegerProperty(timeRemaining);
+        this.timeRemaining = new SimpleIntegerProperty(timeRemaining); // Set in minutes
         this.balance = new SimpleDoubleProperty(balance);
     }
 
@@ -45,5 +45,12 @@ public class User {
 
     public void setBalance(double balance) {
         this.balance.set(balance);
+    }
+
+    // Method to get formatted time remaining
+    public String getFormattedTimeRemaining() {
+        int hours = timeRemaining.get() / 60; // Convert total minutes to hours
+        int minutes = timeRemaining.get() % 60; // Get remaining minutes
+        return hours + "hr " + minutes + "mins"; // Format the string
     }
 }

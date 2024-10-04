@@ -73,7 +73,7 @@
                </font>
             </Button>
             <PasswordField fx:id="passwordField" layoutX="125.0" layoutY="248.0" prefHeight="36.0" prefWidth="244.0" promptText="e.g. pinayflixable" />
-            <TextField fx:id="topupField" layoutX="125.0" layoutY="302.0" prefHeight="36.0" prefWidth="244.0" promptText="₱" />
+            <TextField fx:id="amount" layoutX="125.0" layoutY="302.0" prefHeight="36.0" prefWidth="244.0" promptText="₱" />
          </children></Pane>
    </right>
    <center>
@@ -82,11 +82,11 @@
             <TextField layoutX="100.0" layoutY="14.0" prefHeight="36.0" prefWidth="365.0" promptText="Search Username" />
             <ScrollPane fx:id="scrollPane" layoutX="-4.0" layoutY="104.0" prefHeight="468.0" prefWidth="686.0">
                <content>
-                  <TableView fx:id="userTableView" prefHeight="519.0" prefWidth="674.0">
+                  <TableView fx:id="userTableView" prefHeight="519.0" prefWidth="667.0">
                      <columns>
-                        <TableColumn fx:id="usernameColumn" prefWidth="380.0" text="Username" />
-                        <TableColumn fx:id="timeRemainingColumn" prefWidth="150.0" text="Time Remaining" />
-                        <TableColumn fx:id="balanceColumn" prefWidth="150.0" text="Balance" />
+                        <TableColumn fx:id="usernameColumn" prefWidth="380.0" />
+                        <TableColumn fx:id="timeRemainingColumn" prefWidth="150.0" />
+                        <TableColumn fx:id="balanceColumn" prefWidth="150.0" />
                      </columns>
                   </TableView>
 
