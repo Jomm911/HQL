@@ -47,31 +47,34 @@ public class HelloController {
 
     @FXML
     public void initialize() {
+        // Initialize the ObservableList to hold users
         userList = FXCollections.observableArrayList();
-        userTableView.setItems(userList);
+        userTableView.setItems(userList); // Set the user list to the TableView
 
+        // Bind the username column to the "username" property
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
 
         // Bind timeRemainingColumn to the formatted time string
         timeRemainingColumn.setCellValueFactory(cellData -> {
             User user = cellData.getValue();
-            return new SimpleStringProperty(user.getFormattedTimeRemaining());
+            return new SimpleStringProperty(user.getFormattedTimeRemaining()); // Format the time remaining as a string
         });
 
+        // Bind balance column to the "balance" property
         balanceColumn.setCellValueFactory(new PropertyValueFactory<>("balance"));
 
+        // Add listener to update selectedUser when a user is selected from the TableView
         userTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            selectedUser = newValue;
-        });
-
-        // Add listener to the search field to filter users dynamically
-        search.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                filterUserList(newValue);
+            selectedUser = newValue; // Update the selected user
+            if (selectedUser != null) {
+                System.out.println("Selected user: " + selectedUser.getUsername()); // Optional: For debugging
             }
         });
+
+        // Add listener to filter users dynamically when search input changes
+        search.textProperty().addListener((observable, oldValue, newValue) -> filterUserList(newValue));
     }
+
 
     // Method to filter user list based on search input
     private void filterUserList(String searchTerm) {
@@ -122,39 +125,36 @@ public class HelloController {
 
     @FXML
     protected void onTopUpClick() {
-        if (selectedUser != null) { // Check if a user is selected
+        if (selectedUser != null) {
             String topupAmountText = topupAmountField.getText();
 
             try {
-                // Parse the top-up amount entered by the user
                 double topupAmount = Double.parseDouble(topupAmountText);
+                int additionalMinutes = (int) (topupAmount / 20) * 60;
+                int remainingPesos = (int) (topupAmount % 20);
+                int remainingMinutes = (remainingPesos > 0) ? (remainingPesos * 3) : 0;
 
-                // Calculate additional minutes and balance based on top-up
-                int additionalMinutes = (int) (topupAmount / 20) * 60; // Full hours to minutes (20 pesos = 60 mins)
-                int remainingPesos = (int) (topupAmount % 20); // Calculate remaining pesos
-                int remainingMinutes = (remainingPesos > 0) ? (remainingPesos * 3) : 0; // Convert remaining pesos to minutes
-
-                additionalMinutes += remainingMinutes; // Add the remaining minutes
+                additionalMinutes += remainingMinutes;
 
                 // Update the selected user's time and balance
                 selectedUser.setTimeRemaining(selectedUser.getTimeRemaining() + additionalMinutes);
                 selectedUser.setBalance(selectedUser.getBalance() + topupAmount);
 
-                System.out.println("Updated user: " + selectedUser.getUsername() +
-                        ", new time remaining: " + selectedUser.getTimeRemaining() + " minutes, balance: ₱" + selectedUser.getBalance());
-
-                // Refresh the table to reflect updated time and balance
                 userTableView.refresh();
-
-                // Clear the top-up amount field
                 topupAmountField.clear();
+
+                System.out.println("Updated user: " + selectedUser.getUsername() +
+                        ", new time remaining: " + selectedUser.getFormattedTimeRemaining() +
+                        ", new balance: ₱" + selectedUser.getBalance());
             } catch (NumberFormatException e) {
                 System.out.println("Invalid top-up amount. Please enter a numeric value.");
             }
         } else {
             System.out.println("No user selected. Please select a user to top-up.");
         }
+
     }
+
 
 
 }
